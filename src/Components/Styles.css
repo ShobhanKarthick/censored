@@ -1,0 +1,327 @@
+html,
+body {
+  margin: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: Nexa-Bold;
+}
+
+p {
+  font-family: Nexa-Regular;
+  font-size: 20px;
+  color: #ffffff;
+}
+
+a {
+  text-decoration: none;
+}
+
+@font-face {
+  font-family: Nexa-Regular;
+  src: url("./../Fonts/NexaRegular.otf");
+}
+@font-face {
+  font-family: Nexa-Light;
+  src: url("./../Fonts/NexaLight.otf");
+}
+@font-face {
+  font-family: Nexa-Bold;
+  src: url("./../Fonts/NexaBold.otf");
+}
+
+.home {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+    url("./Images/bg1.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.home-head {
+  font-size: 60px;
+  margin: 0;
+  color: #ffffff;
+  width: fit-content;
+}
+
+#home-head {
+  font-size: 30px;
+}
+
+#sub-head {
+  font-size: 17px;
+}
+
+.head-container {
+  display: flex;
+  width: 100%;
+  padding: 25px;
+  justify-content: space-between;
+  box-sizing: border-box;
+  margin-bottom: auto;
+}
+
+.head-container a {
+  color: #ffffff;
+}
+
+.home-subhead {
+  font-size: 35px;
+  margin: 0;
+  color: #ffffff;
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+}
+
+.home-nav {
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 25px;
+  box-sizing: border-box;
+  align-self: flex-end;
+  padding: 25px;
+  padding-left: 45px;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.95);
+}
+
+#home-nav {
+  display: none;
+  width: max-content;
+}
+
+.home-nav > a {
+  font-family: Nexa-Bold;
+  font-size: 25px;
+  color: #ffffff;
+  align-self: flex-start;
+  margin-top: 30px;
+  padding-right: 100px;
+}
+
+.home-nav > a:hover {
+  color: #038dea;
+}
+
+.welcome {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.button-container-home {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .home-play-button {
+    width: 120px;
+    margin-top: 30px;
+    text-align: center;
+    font-family: Nexa-Bold;
+    font-size: 25px;
+    padding: 10px;
+    color: #ffffff;
+    background-color: #046ae6;
+    border-radius: 35px;
+  }
+  
+  .home-howtoplay-button {
+    width: 200px;
+    margin-top: 30px;
+    text-align: center;
+    font-family: Nexa-Bold;
+    font-size: 25px;
+    padding: 10px;
+    background-color: #00000050;
+    color: #038dea;
+    border-color: #038dea;
+    border-width: 5px;
+    border-style: solid;
+    border-radius: 35px;
+  }
+  
+  @media only screen and (max-width: 600px) {
+    .category-button-container {
+      flex-direction: column;
+    }
+  
+    .category-selection {
+      width: 90%;
+    }
+  
+    .home-head {
+      font-size: 35px;
+    }
+  
+    .home-subhead {
+      font-size: 25px;
+      letter-spacing: normal;
+    }
+  
+    #home-nav {
+      width: 100%;
+      padding: 25px;
+    }
+    .home-nav > a {
+      font-size: 22px;
+      align-self: center;
+      padding: 0;
+    }
+  
+    .button-container-home {
+      flex-direction: column;
+    }
+  }
+
+  .about-us {
+    background-color: #06060c;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    box-sizing: border-box;
+  }
+  
+  .about-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-color: #00ffff;
+    border-style: solid;
+    border-width: 3px;
+    width: 80%;
+    padding: 40px;
+    box-sizing: border-box;
+  }
+  
+  #team {
+    margin-top: 20px;
+  }
+  
+  .about-head {
+    font-family: Nexa-Regular;
+    font-size: 40px;
+    padding: 30px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    color: #ffffff;
+    width: fit-content;
+    box-sizing: border-box;
+  }
+  
+  .about-desc {
+    display: flex;
+    flex: 1;
+    flex-flow: row wrap;
+    justify-content: center;
+    font-family: Nexa-Light;
+    font-size: 30px;
+    color: #ffffff;
+    box-sizing: border-box;
+    margin-top: -25px;
+  }
+  
+  .person {
+    display: flex;
+    flex: 0.5;
+    flex-basis: 45%;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    box-sizing: border-box;
+    margin: 20px;
+  }
+  
+  .avatar {
+    height: 200px;
+  }
+  
+  .name,
+  .position {
+    margin: 0;
+    padding: 5px;
+    padding-left: 25px;
+  }
+  .position {
+    font-weight: normal;
+    font-family: Nexa-Regular;
+    line-height: 1.6;
+  }
+  
+  @media only screen and (max-width: 600px) {
+    .about-head {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      text-align: center;
+      font-size: 30px;
+    }
+  
+    .about-desc {
+      width: 100%;
+      margin-left: 0;
+      justify-content: center;
+    }
+  
+    .about-container {
+      width: 90%;
+      padding: 30px;
+    }
+  
+    #team {
+      padding: 30px 40px;
+      margin: 0;
+      margin-top: 30px;
+    }
+  
+    .person {
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 40px;
+    }
+  
+    .avatar {
+      margin-bottom: 20px;
+    }
+  
+    .name {
+      font-size: 35px;
+    }
+    .position{
+      font-size: 19.25px;
+    }
+  
+    .name,
+    .position {
+      padding: 0;
+      text-align: center;
+    }
+  }
+  
