@@ -36,7 +36,7 @@ a {
 }
 
 .home {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+  background-image: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)),
     url("./Images/bg1.jpg");
   background-position: center;
   background-repeat: no-repeat;
