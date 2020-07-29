@@ -1,0 +1,31 @@
+{
+  "name": "censored",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ShobhanKarthick/censored.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ShobhanKarthick/censored/issues"
+  },
+  "homepage": "https://github.com/ShobhanKarthick/censored#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "heroku-ssl-redirect": "0.0.4",
+    "mongoose": "^5.9.26"
+  },
+  "engines": {
+    "node": "13.12.0"
+  },
+  "devDependencies": {
+    "dotenv": "^8.2.0"
+  }
+}
