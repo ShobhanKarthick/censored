@@ -325,3 +325,121 @@ a {
     }
   }
   
+  .upload-page {
+    background-color: #171717;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .upload-head {
+    color: #ffffff;
+  }
+  
+  .upload-form {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    max-width: 60%;
+  }
+
+  .upload-tags-container{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    width: 50vw;
+    box-sizing: border-box;
+  }
+
+
+  .upload-input, .upload-tag-input {
+    background-color: #090909;
+    font-family: Nexa-Regular;
+    font-size: 28px;
+    color: #ffffff;
+    border: 0;
+    padding: 10px;
+    padding-left: 15px;
+    width: 50vw;
+    box-sizing: border-box;
+  }
+
+  .upload-tags-container div{
+     display: flex;
+     flex-direction: row;
+     justify-content: center;
+     align-items: center;
+  }
+
+  .upload-tags-container input{
+    width: 50px;
+    margin: 0;
+  }
+  
+  .upload-input-label {
+    font-family: Nexa-Regular;
+    font-size: 28px;
+    color: #ffffff;
+    border: 0;
+    padding: 8px;
+  }
+  
+  #clue-input,
+  #answer-input {
+    text-transform: capitalize;
+  }
+  
+  .upload-button {
+    display: inline-flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    background-color: #4ca541;
+    border-radius: 25px;
+    width: 150px;
+    color: #ffffff;
+    border: 0;
+    padding: 10px;
+    align-self: center;
+    font-family: Nexa-Bold;
+    font-size: 25px;
+    margin-top: 40px;
+  }
+  
+  @media only screen and (max-width: 600px) {
+    .upload-head {
+      font-size: 25px;
+    }
+  
+    .upload-input {
+      font-size: 18px;
+      width: 75vw;
+    }
+  
+    .upload-button {
+      font-family: Nexa-Regular;
+      font-size: 18px;
+      width: 120px;
+    }
+  }
+  
+  .bg-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    height: 100%;
+    width: 100%;
+  }
+  
+  .blur{
+    filter: blur(9px);
+  }
