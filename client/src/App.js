@@ -6,6 +6,7 @@ import Play from './Components/Play';
 import HowToPlay from './Components/HowToPlay';
 import About from './Components/About';
 import Upload from './Components/Upload';
+import Popup from './Components/Popup';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
       <Route path="/howtoplay" exact component={HowToPlay} />
       <Route path="/about" exact component={About} />
       <Route path="/upload" exact component={Upload} />
+      <Route path="/popup" exact component={Popup} />
     </Router>
   );
 }
