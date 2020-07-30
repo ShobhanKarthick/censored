@@ -18,7 +18,7 @@ db.once("open", () => {
 	console.log("MongoDB connection established")
 })
 
-let Censored = require("./Censored.model")
+let Censored = require("./Censored.model");
 
 app.use(bodyParser.json())
 
@@ -44,6 +44,21 @@ censoredRoutes.route("/add").post((req, res) => {
 		res.status(400).send("Censor was not added")
 		console.log("Censor was not added")
 		console.log(err)
+	})
+})
+
+
+censoredRoutes.route('/update/:id').put((req, res, next) => {
+	Censored.findByIdAndUpdate(req.params.id, {
+		$set: req.body
+	}, (error, data) => {
+		if (error){
+			console.log(error)
+			return next(error);
+		} else {
+			res.json(data)
+			console.log('Record updated successfully')
+		}
 	})
 })
 
