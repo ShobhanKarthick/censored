@@ -311,7 +311,9 @@ function Play() {
 
       <div className='play-image-container'>
           <img id="blur-image" src={image} alt='pic of the person' onError={handleImageBroken} />
-          <div className='loader' id='loader' />
+          {
+            // <div className='loader' id='loader' />
+          }
       </div>
       <h1 className='play-page-head' id="play-page-answer-head">The answer is <span style={{color: "#038dea"}}>{allCensored[number] && allCensored[number].answer} </span></h1>
       <button id="next-button" className="answer-button" onClick={postAnswerDisplay}>NEXT</button>
