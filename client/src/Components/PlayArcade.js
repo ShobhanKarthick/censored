@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Menu, Close } from "@material-ui/icons";
+import { Menu, Close, Timer } from "@material-ui/icons";
 import { Link } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
 import generateHash from "random-hash";
 
 function Play() {
-  const [allCensored, setAllCensored] = useState([]);
+  const [allCensored, setAllCensored] = useState("");
+  const [user, setUser] = useState('')
+  const [score, setScore] = useState(0)
   const [userAnswer, setUserAnswer] = useState("");
   const [number, setNumber] = useState(0);
   const [errorCount, setErrorCount] = useState(0);
@@ -19,23 +21,60 @@ function Play() {
   let image, clue;
 
   useEffect(() => {
+    if(localStorage.getItem('name')){
+    axios.post("/users/query", {name: localStorage.getItem('name')})
+    .then(response => {
+        let user = response.data
+        setUser(user[0])
+        setScore(user[0].score)
+    })
+    .catch(err => console.log(err))
+    }
+    else{
+        history.push("/")
+    }
+
+  }, [])
+
+  useEffect(() => {
     if (!executed) {
       setRandom(generateHash({ length: 7 }));
       setExecuted(true);
       return;
     }
-  }, []);
+  },[])
 
   useEffect(() => {
-    axios
-      .get("/censored")
-      .then((response) => {
-        let results = response.data;
-        let shuffle = shuffleSeed.shuffle(results, random);
-        setAllCensored(shuffle);
-      })
-      .catch((error) => console.error(error));
+    axios.get("/censored")
+    .then((response) => {
+      let shuffle = shuffleSeed.shuffle(response.data, random);
+      setAllCensored(shuffle);
+    })
+    .catch(error => console.error(error))
   }, [random, shuffleSeed]);
+
+    if(timer > 190){
+      document.getElementById("time-up-display").style.display = "flex"
+      document.getElementById("bg-overlay").style.display = "block"
+    }
+
+    useEffect(() => {
+      if(timer === 6){
+      document.getElementById("hold-on-info").style.display = "block";
+      }
+      if(timer === 71){
+        document.getElementById("hold-on-info").style.display = "block";
+      }
+      if(timer === 131){
+        document.getElementById("hold-on-info").style.display = "block";
+      }
+      if(timer === 161){
+        document.getElementById("hold-on-info").style.display = "block";
+      }
+      if(timer === 181){
+        document.getElementById("hold-on-info").style.display = "block";
+      }
+    })
 
   useEffect(() => {
     if (
@@ -48,7 +87,7 @@ function Play() {
     return () => {
       if (window.location.pathname === "/") {
         console.log("back");
-        history.push("/popup");
+        history.push("/leaderboard");
       }
     };
   }, [history]);
@@ -78,8 +117,7 @@ function Play() {
   const submitHandler = (event) => {
     event.preventDefault();
     if (
-      allCensored[number].answer.toUpperCase().replace(/\s/g, "") ===
-      userAnswer.toUpperCase().replace(/\s/g, "")
+      allCensored[number].answer.toUpperCase().replace(/\s/g,'') === userAnswer.toUpperCase().replace(/\s/g,'')
     ) {
       document.getElementById("toast-correct").style.display = "block";
       window.setTimeout(function () {
@@ -87,20 +125,25 @@ function Play() {
       }, 3000);
 
       setNumber(number + 1);
-      setTimer(0);
+      setScore(score + 1);
       setUserAnswer("");
       window.scrollTo(0, 100);
-      axios
-        .put("/censored/update/" + allCensored[number]._id, {
-          winCount: allCensored[number].winCount + 1,
-        })
-        .catch((error) => console.log(error));
+      axios.put('/censored/update/'+allCensored[number]._id, {winCount: allCensored[number].winCount+1})
+      axios.put('/users/update/' + user._id, {score: (score + 1)})
+      .catch(err => console.log(err))
     } else {
       document.getElementById("toast-incorrect").style.display = "block";
       window.setTimeout(function () {
         document.getElementById("toast-incorrect").style.display = "none";
       }, 3000);
     }
+  };
+
+  const nextButton = (event) => {
+    event.preventDefault()
+    setNumber(number + 1);
+    setUserAnswer("");
+    window.scrollTo(0, 100);
   };
 
   if (allCensored[number]) {
@@ -158,48 +201,11 @@ function Play() {
     window.scrollTo(0, 100);
   };
 
-  const displayAnswer = (event) => {
-    event.preventDefault();
-    if (timer > 20) {
-      document.getElementById("play-page-answer-head").style.zIndex = "2";
-      document.getElementById("blur-image").style.zIndex = "2";
-      document.getElementById("blur-image").style.filter = "blur(0px)";
-      document.getElementById("play-page-answer-head").style.display = "block";
-      document.getElementById("bg-overlay").style.display = "block";
-      document.getElementById("next-button").style.display = "block";
-      document.getElementById("play-answer-message").style.display = "block";
-      document.getElementById('blur-image').scrollIntoView(true);
-
-      axios
-        .put("/censored/update/" + allCensored[number]._id, {
-          lossCount: allCensored[number].lossCount + 1,
-        })
-        .catch((error) => console.log(error));
-    } else {
-      document.getElementById("hold-on-info").style.display = "block";
-    }
-  };
-
-  const postAnswerDisplay = () => {
-    document.getElementById("play-page-answer-head").style.zIndex = "0";
-    document.getElementById("blur-image").style.zIndex = "0";
-    document.getElementById("play-answer-message").style.display = "none";
-    document.getElementById("blur-image").style.filter = "blur(10px)";
-    document.getElementById("play-page-answer-head").style.display = "none";
-    document.getElementById("bg-overlay").style.display = "none";
-    document.getElementById("next-button").style.display = "none";
-
-    setTimer(0);
-    setNumber(number + 1);
-    setUserAnswer("");
-    window.scrollTo(0, 100);
-  };
 
   const lastPage = () => {
     if (allCensored[number - 1]) {
       if (number === allCensored.length) {
-        document.getElementById("play-sub-head").style.display = "none";
-        document.getElementById("play-image-container").style.display = "none";
+        // document.getElementById("play-sub-head").style.display = "none";
         document.getElementById("play-answer").style.display = "none";
         document.getElementById("uncensor").style.display = "none";
         return (
@@ -228,17 +234,47 @@ function Play() {
   };
 
   const holdOnInfo = () => {
-    if (20 - timer > 0) {
+    if (timer < 10) {
       return (
         <React.Fragment>
-          You can see the answer in {20 - timer} secs.
-          <br /> So, Hold your horses and think baby!!!
+          Your 3-minute countdown has begun.
+          <br /> So, buckle up dude!!!
         </React.Fragment>
       );
-    } else {
-      return <React.Fragment>You can now see the answer !!!</React.Fragment>;
+    } 
+    if (timer > 70 && timer < 129) {
+      return (
+        <React.Fragment>
+          1 minute is up...
+          <br /> Come on hurry up!!!
+        </React.Fragment>
+      );
     }
-  };
+    if (timer > 130 && timer < 159) {
+      return (
+        <React.Fragment>
+          2 minutes up...
+          <br /> Catch up with your friends!!!
+        </React.Fragment>
+      );
+    }
+    if (timer > 160 && timer < 179) {
+      return (
+        <React.Fragment>
+        Your final 30 seconds
+          <br /> Pull yourself together!!!
+        </React.Fragment>
+      );
+    }
+      if (timer > 180) {
+        return (
+          <React.Fragment>
+          Your last 10 seconds
+            <br /> Buckle Up!!!
+          </React.Fragment>
+        );
+      }
+    };
 
   const open = () => {
     document.getElementById("home-nav").style.display = "flex";
@@ -250,14 +286,21 @@ function Play() {
 
   return (
     <div className='play-page'>
-      <div
-        id='bg-dark-overlay'
-        style={{ display: "none", backgroundColor: "#080808" }}
-        className='bg-overlay'
-      />
       <div id='hold-on-info' className='hold-on-info'>
         {holdOnInfo()}
       </div>
+      <div id='time-up-display' className='time-up-display'>
+        <h1>TIME UP !!!</h1>
+        <Timer />
+        <div>
+        <div className="time-up-buttons" style={{ padding: "10px"}} onClick={() => window.location.reload()} > PLAY AGAIN </div>
+        <div className="time-up-buttons">
+        
+        <Link  style={{ padding: "10px", color: "#046ae6"}} to="/leaderboard"> OHH DAMN! </Link>
+        </div>
+        </div>
+      </div>
+    
       <div className='head-container'>
         <div style={{ width: "100%", boxSizing: "border-box" }}>
           <h1 id='home-head' className='home-head'>
@@ -285,37 +328,33 @@ function Play() {
       <div id='toast-incorrect' className='toast-incorrect'>
         Sorry! Your answer is wrong
       </div>
+
       <div
         style={{
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
-          maxWidth: "80%",
         }}
       >
         {number === 0 && (
-          <h1 className='play-page-head'>Let's Uncensor... Shall we ?!</h1>
+          <h1 style={{textAlign: "center"}} className='play-page-head'>Go to private mode! <br />Censors coming up...</h1>
         )}
 
         {number < allCensored.length && (
           <h1 className='play-page-head'>Censor #{number + 1 - errorCount}</h1>
-          )}
+        )}
 
-        <h1 id='play-sub-head' className='play-sub-head'>
-          {clue}
-        </h1>
-      </div>
-      <h1 className='play-page-head' id="play-answer-message">Uncensored Titan is censoring you for life !</h1>
+        <h1 id='play-sub-head' className='play-sub-head'>{clue}</h1>
 
-      <div className='play-image-container'>
-          <img id="blur-image" src={image} alt='pic of the person' onError={handleImageBroken} />
-          {
-            // <div className='loader' id='loader' />
-          }
-      </div>
-      <h1 className='play-page-head' id="play-page-answer-head">The answer is <span style={{color: "#038dea"}}>{allCensored[number] && allCensored[number].answer} </span></h1>
-      <button id="next-button" className="answer-button" onClick={postAnswerDisplay}>NEXT</button>
+    </div>
+
+    <div className='play-image-container'>
+    <img id="blur-image" src={image} alt='pic of the person' onError={handleImageBroken} />
+    {
+      // <div className='loader' id='loader' />
+    }
+  </div>
 
       <form id='play-form' className='play-form' onSubmit={submitHandler}>
         <input
@@ -329,18 +368,10 @@ function Play() {
           required
         />
         <div id='button-container' className='button-container'>
-          <button id='uncensor' className='answer-button'type='submit'>
+          <button id='uncensor' className='answer-button' type='submit'>
             UNCENSOR
           </button>
-          {number < allCensored.length && (
-            <button
-              id='show-answer'
-              className='answer-button'
-              onClick={displayAnswer}
-            >
-            SHOW ANSWER
-            </button>
-          )}
+          {number < allCensored.length && ( <button id='next-arcade-button' className='answer-button' onClick={nextButton} > NEXT </button> )}
           {lastPage()}
         </div>
       </form>

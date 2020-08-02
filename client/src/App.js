@@ -7,12 +7,16 @@ import HowToPlay from './Components/HowToPlay';
 import About from './Components/About';
 import Upload from './Components/Upload';
 import Popup from './Components/Popup';
+import Leaderboard from './Components/Leaderboard';
+import PlayArcade from './Components/PlayArcade';
 
 function App() {
   return (
     <Router>
       <Route path="/" exact component={Home} />
       <Route path="/play" exact component={Play} />
+      <Route path="/playarcade" exact component={PlayArcade} />
+      <Route path="/leaderboard" exact component={Leaderboard} />
       <Route path="/howtoplay" exact component={HowToPlay} />
       <Route path="/about" exact component={About} />
       <Route path="/upload" exact component={Upload} />

@@ -9,6 +9,7 @@ const PORT = process.env.PORT || 4000;
 const app = express()
 app.use(sslRedirect())
 const censoredRoutes = express.Router()
+const userRoutes = express.Router()
 
 const mongoDB = 'mongodb://127.0.0.1/censored';
 mongoose.connect(process.env.MONGODB_URI || mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
@@ -18,7 +19,8 @@ db.once("open", () => {
 	console.log("MongoDB connection established")
 })
 
-let Censored = require("./Censored.model");
+let Censored = require("./Models/Censored.model");
+let User = require("./Models/User.model");
 
 app.use(bodyParser.json())
 
@@ -62,8 +64,61 @@ censoredRoutes.route('/update/:id').put((req, res, next) => {
 	})
 })
 
-app.use("/censored", censoredRoutes)
+userRoutes.route("/topten").get((req, res) => {
+	User.find().sort({score: -1}).limit(10)
+		.then(users => {
+			res.status(200).json(users)
+		})
+		.catch(err => {
+			res.status(400).send("records not found")
+			console(err)
+			console.log("Records not found")
+		})
+})
 
+userRoutes.route("/add").post((req, res) => {
+	let user = new User(req.body)
+
+	user.save()
+	.then((user) => {
+		res.status(200).send("User added successfully")
+	})
+	.catch(err => {
+		res.status(400).send("User was not added")
+		console.log("User was not added")
+		console.log(err)
+	})
+})
+
+userRoutes.route("/query").post((req, res) => {
+	let query = req.body;
+	User.find(query, (err, user) => {
+		if(!user){
+			res.status(400)
+			console.log(err)
+			console.log("Database not found")
+		}
+		else{
+			res.json(user)
+		}
+	})
+})
+
+userRoutes.route('/update/:id').put((req, res) => {
+	User.findByIdAndUpdate(req.params.id, {$set: req.body})
+	.then(user => {
+		res.status(200).send("record updated successfully")
+		console.log("record updated successfully")
+	})
+	.catch(err => {
+		res.status(400).send("not updated")
+		console.log("not updated")
+	})
+})
+
+
+app.use("/censored", censoredRoutes)
+app.use("/users", userRoutes)
 
 if (process.env.NODE_ENV === "production") {
 	app.use(express.static("client/build"));
