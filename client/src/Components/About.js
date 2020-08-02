@@ -32,6 +32,7 @@ function About() {
         <Link to='/'>HOME</Link>
         <Link to='/howtoplay'>HOW TO PLAY</Link>
         <Link to='/play'>PLAY</Link>
+        <Link to='/leaderboard'>LEADERBOARD</Link>
       </div>
 
       <fieldset className='about-container'>

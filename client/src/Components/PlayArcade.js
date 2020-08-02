@@ -320,6 +320,7 @@ function Play() {
         <Link to='/'>HOME</Link>
         <Link to='/howtoplay'>HOW TO PLAY</Link>
         <Link to='/about'>ABOUT US</Link>
+        <Link to='/leaderboard'>LEADERBOARD</Link>
       </div>
       <div className='bg-overlay' id='bg-overlay' />
       <div id='toast-correct' className='toast-correct'>
