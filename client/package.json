@@ -10,6 +10,7 @@
     "@testing-library/user-event": "^7.2.1",
     "axios": "^0.19.2",
     "colorthief": "^2.3.2",
+    "humanize-duration": "^3.23.1",
     "random-hash": "^4.0.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
@@ -24,7 +25,6 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "heroku-postbuild": "npm install && npm run build"
-
   },
   "eslintConfig": {
     "extends": "react-app"
