@@ -75,6 +75,9 @@ function Play() {
       if(timer === 171){
         document.getElementById("hold-on-info").style.display = "block";
       }
+      if(timer === 180){
+        document.getElementById("timer-field").style.display = "none";
+      }
     })
 
   useEffect(() => {
