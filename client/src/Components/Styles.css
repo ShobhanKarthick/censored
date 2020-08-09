@@ -274,8 +274,8 @@ a {
     }
     .home-nav > a {
       font-size: 22px;
-      align-self: center;
-      padding: 0;
+      align-self: flex-start;
+      padding-left: 20px;
     }
   
     .button-container-home {
@@ -611,6 +611,23 @@ a {
   font-size: 20px;
   border-radius: 5px;
   z-index: 2;
+}
+
+#start-up-display div{
+  text-align: center;
+  font-family: Nexa-Regular;
+  font-size: 25px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  color: #046ae6;
+  width: max-content;
+  border-style: solid;
+  border-width: 3px;
+  border-color: #046ae6;
+  margin-bottom: 10px;
+  border-radius: 3px;
 }
 
 #time-up-display h1{
@@ -1068,6 +1085,7 @@ a {
   color: #046ae6;
 }
 
+
 .table-container{
   display: flex;
   justify-content: center;
@@ -1089,6 +1107,7 @@ a {
   text-align: center;
   padding: 10px;
   box-sizing: border-box;
+  table-layout: fixed;
 }
 
 .leaderboard-table th, td{
@@ -1097,6 +1116,7 @@ a {
   color: #ffffff;
   padding: 10px;
   box-sizing: border-box;
+  word-break: break-word;
 }
 
 .leaderboard-table th{
@@ -1110,10 +1130,10 @@ a {
 
 @media only screen and (max-width: 600px) {
   .table-container{
-    width: 90%;
+    width: 100%;
   }
   .leaderboard-table th, td{
-    font-size: 20px;
+    font-size: 15px;
   }
 
 }

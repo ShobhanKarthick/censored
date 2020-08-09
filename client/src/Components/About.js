@@ -11,6 +11,18 @@ function About() {
     document.getElementById("home-nav").style.display = "none";
   };
 
+  const playDrop = () => {
+    if (
+      document.getElementById("play-links-arcade").style.display === "block"
+    ) {
+      document.getElementById("play-links-arcade").style.display = "none";
+      document.getElementById("play-links-zen").style.display = "none";
+    } else {
+      document.getElementById("play-links-arcade").style.display = "block";
+      document.getElementById("play-links-zen").style.display = "block";
+    }
+  };
+
   return (
     <div className='about-us'>
       <div className='head-container'>
@@ -31,13 +43,32 @@ function About() {
         />
         <Link to='/'>HOME</Link>
         <Link to='/howtoplay'>HOW TO PLAY</Link>
-        <Link to='/play'>PLAY</Link>
+        <Link onClick={playDrop} to='#'>
+          PLAY
+        </Link>
+        <Link
+          id='play-links-zen'
+          style={{ display: "none", marginLeft: "20px" }}
+          to='/play'
+        >
+          ZEN MODE
+        </Link>
+        <Link
+          id='play-links-arcade'
+          style={{ display: "none", marginLeft: "20px" }}
+          to='/playarcade'
+        >
+          ARCADE MODE
+        </Link>{" "}
         <Link to='/leaderboard'>LEADERBOARD</Link>
       </div>
 
       <fieldset className='about-container'>
         <legend className='about-head'>Our Story</legend>
-        <div className='about-desc' style={{fontSize: "27px", lineHeight: 1.4,}}>
+        <div
+          className='about-desc'
+          style={{ fontSize: "27px", lineHeight: 1.4 }}
+        >
           Just a bunch of undergrads from IIT Madras, who are connected by one
           interest, and that is connecting you folks through this supercool
           game! It all started one day when we started playing this game among

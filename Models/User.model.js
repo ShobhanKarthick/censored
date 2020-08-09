@@ -9,6 +9,10 @@ const newUser = new Schema({
     score: {
         type: Number,
         default:0,
+    },
+    bestScore: {
+        type: Array,
+        default: [0]
     }
 })
 

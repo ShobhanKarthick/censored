@@ -8,6 +8,8 @@ import generateHash from "random-hash";
 function Play() {
   const [allCensored, setAllCensored] = useState("");
   const [user, setUser] = useState('')
+  const [bestScore, setBestScore] = useState([])
+  const [gameScore, setGameScore] = useState(0)
   const [score, setScore] = useState(0)
   const [userAnswer, setUserAnswer] = useState("");
   const [number, setNumber] = useState(0);
@@ -28,6 +30,7 @@ function Play() {
         let user = response.data
         setUser(user[0])
         setScore(user[0].score)
+        setBestScore(user[0].bestScore)
     })
     .catch(err => console.log(err))
     }
@@ -38,6 +41,8 @@ function Play() {
   }, [])
 
   useEffect(() => {
+    document.getElementById("start-up-display").style.display = "flex"
+    document.getElementById("bg-overlay").style.display = "block"
     if (!executed) {
       setRandom(generateHash({ length: 7 }));
       setExecuted(true);
@@ -54,10 +59,13 @@ function Play() {
     .catch(error => console.error(error))
   }, [random, shuffleSeed]);
 
-    if(timer > 190){
-      document.getElementById("time-up-display").style.display = "flex"
-      document.getElementById("bg-overlay").style.display = "block"
-    }
+  if(timer === 180){        
+    bestScore.push(gameScore)
+    axios.put('/users/update/' + user._id, {bestScore: bestScore})
+    console.log(bestScore)
+    document.getElementById("time-up-display").style.display = "flex"
+    document.getElementById("bg-overlay").style.display = "block"
+  }
 
     useEffect(() => {
       if(timer === 6){
@@ -91,7 +99,10 @@ function Play() {
     return () => {
       if (window.location.pathname === "/") {
         console.log("back");
+        bestScore.push(gameScore)
+        console.log(bestScore)
         history.push("/leaderboard");
+        axios.put('/users/update/' + user._id, {bestScore: bestScore})
       }
     };
   }, [history]);
@@ -293,6 +304,13 @@ function Play() {
       <div id='hold-on-info' className='hold-on-info'>
         {holdOnInfo()}
       </div>
+
+      <div id='start-up-display' className='time-up-display'>
+        <p style={{margin: 0, fontSize: "30px", textAlign: "center", marginBottom: "20px"}}>You have got just 3 minutes !!!</p>
+        <p style={{margin: 0, fontSize: "20px", textAlign: "center", marginBottom: "20px"}}>Do as much and top the leaderboard :)</p>
+        <div style={{float: "right", padding: "10px", fontSize: "20px"}} onClick={() => {document.getElementById("start-up-display").style.display = "none"; document.getElementById("bg-overlay").style.display = "none"; setTimer(0)}}>Cool</div>
+      </div>
+
       <div id='time-up-display' className='time-up-display'>
         <h1>TIME UP !!!</h1>
         <Timer />
