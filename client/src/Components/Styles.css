@@ -1137,3 +1137,25 @@ a {
   }
 
 }
+
+.results{
+  display: flex;
+  flex-direction: column;
+}
+
+.results p{
+  margin: 0;
+  padding: 10px;
+  padding-left: 15px;
+  box-sizing: border-box;
+  width: 100%;
+  background-color: #161616;
+}
+
+.results p:hover{
+  background-color: #046ae6;
+}
+
+.results p:focus{
+  background-color: #046ae6;
+}

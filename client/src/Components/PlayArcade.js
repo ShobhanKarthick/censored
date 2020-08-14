@@ -7,10 +7,11 @@ import generateHash from "random-hash";
 
 function Play() {
   const [allCensored, setAllCensored] = useState("");
-  const [user, setUser] = useState('')
-  const [bestScore, setBestScore] = useState([])
-  const [gameScore, setGameScore] = useState(0)
-  const [score, setScore] = useState(0)
+  const [results, setResults] = useState([]);
+  const [user, setUser] = useState("");
+  const [bestScore, setBestScore] = useState([]);
+  const [gameScore, setGameScore] = useState(0);
+  const [score, setScore] = useState(0);
   const [userAnswer, setUserAnswer] = useState("");
   const [number, setNumber] = useState(0);
   const [errorCount, setErrorCount] = useState(0);
@@ -24,69 +25,69 @@ function Play() {
   let image, clue;
 
   useEffect(() => {
-    if(localStorage.getItem('name')){
-    axios.post("/users/query", {name: localStorage.getItem('name')})
-    .then(response => {
-        let user = response.data
-        setUser(user[0])
-        setScore(user[0].score)
-        setBestScore(user[0].bestScore)
-    })
-    .catch(err => console.log(err))
+    if (localStorage.getItem("name")) {
+      axios
+        .post("/users/query", { name: localStorage.getItem("name") })
+        .then((response) => {
+          let user = response.data;
+          setUser(user[0]);
+          setScore(user[0].score);
+          setBestScore(user[0].bestScore);
+        })
+        .catch((err) => console.log(err));
+    } else {
+      history.push("/");
     }
-    else{
-        history.push("/")
-    }
-
-  }, [])
+  }, []);
 
   useEffect(() => {
-    document.getElementById("start-up-display").style.display = "flex"
-    document.getElementById("bg-overlay").style.display = "block"
+    document.getElementById("start-up-display").style.display = "flex";
+    document.getElementById("bg-overlay").style.display = "block";
     if (!executed) {
       setRandom(generateHash({ length: 7 }));
       setExecuted(true);
       return;
     }
-  },[])
+  }, []);
 
   useEffect(() => {
-    axios.get("/censored")
-    .then((response) => {
-      let shuffle = shuffleSeed.shuffle(response.data, random);
-      setAllCensored(shuffle);
-    })
-    .catch(error => console.error(error))
+    axios
+      .get("/censored")
+      .then((response) => {
+        let shuffle = shuffleSeed.shuffle(response.data, random);
+        setAllCensored(shuffle);
+      })
+      .catch((error) => console.error(error));
   }, [random, shuffleSeed]);
 
-  if(timer === 180){        
-    bestScore.push(gameScore)
-    axios.put('/users/update/' + user._id, {bestScore: bestScore})
-    console.log(bestScore)
-    document.getElementById("time-up-display").style.display = "flex"
-    document.getElementById("bg-overlay").style.display = "block"
+  if (timer === 180) {
+    bestScore.push(gameScore);
+    axios.put("/users/update/" + user._id, { bestScore: bestScore });
+    console.log(bestScore);
+    document.getElementById("time-up-display").style.display = "flex";
+    document.getElementById("bg-overlay").style.display = "block";
   }
 
-    useEffect(() => {
-      if(timer === 6){
+  useEffect(() => {
+    if (timer === 6) {
       document.getElementById("hold-on-info").style.display = "block";
-      }
-      if(timer === 61){
-        document.getElementById("hold-on-info").style.display = "block";
-      }
-      if(timer === 121){
-        document.getElementById("hold-on-info").style.display = "block";
-      }
-      if(timer === 151){
-        document.getElementById("hold-on-info").style.display = "block";
-      }
-      if(timer === 171){
-        document.getElementById("hold-on-info").style.display = "block";
-      }
-      if(timer === 180){
-        document.getElementById("timer-field").style.display = "none";
-      }
-    })
+    }
+    if (timer === 61) {
+      document.getElementById("hold-on-info").style.display = "block";
+    }
+    if (timer === 121) {
+      document.getElementById("hold-on-info").style.display = "block";
+    }
+    if (timer === 151) {
+      document.getElementById("hold-on-info").style.display = "block";
+    }
+    if (timer === 171) {
+      document.getElementById("hold-on-info").style.display = "block";
+    }
+    if (timer === 180) {
+      document.getElementById("timer-field").style.display = "none";
+    }
+  });
 
   useEffect(() => {
     if (
@@ -99,10 +100,10 @@ function Play() {
     return () => {
       if (window.location.pathname === "/") {
         console.log("back");
-        bestScore.push(gameScore)
-        console.log(bestScore)
+        bestScore.push(gameScore);
+        console.log(bestScore);
         history.push("/leaderboard");
-        axios.put('/users/update/' + user._id, {bestScore: bestScore})
+        axios.put("/users/update/" + user._id, { bestScore: bestScore });
       }
     };
   }, [history]);
@@ -126,13 +127,31 @@ function Play() {
   }
 
   const userAnswerHandler = (event) => {
-    setUserAnswer(event.target.value);
+    let answer = event.target.value
+
+    setUserAnswer(answer);
+
+    if (answer !== "") {
+      document.getElementById("results").style.display = "flex";
+    } else {
+      document.getElementById("results").style.display = "none";
+    }
+
+    if(!(answer.includes("\\"))){
+    axios
+      .post("/censored/search", { searchValue: answer })
+      .then((response) => {
+        setResults(response.data);
+      })
+      .catch((err) => console.log(err));
+    }
   };
 
   const submitHandler = (event) => {
     event.preventDefault();
     if (
-      allCensored[number].answer.toUpperCase().replace(/\s/g,'') === userAnswer.toUpperCase().replace(/\s/g,'')
+      allCensored[number].answer.toUpperCase().replace(/\s/g, "") ===
+      userAnswer.toUpperCase().replace(/\s/g, "")
     ) {
       document.getElementById("toast-correct").style.display = "block";
       window.setTimeout(function () {
@@ -143,9 +162,12 @@ function Play() {
       setScore(score + 1);
       setUserAnswer("");
       window.scrollTo(0, 100);
-      axios.put('/censored/update/'+allCensored[number]._id, {winCount: allCensored[number].winCount+1})
-      axios.put('/users/update/' + user._id, {score: (score + 1)})
-      .catch(err => console.log(err))
+      axios.put("/censored/update/" + allCensored[number]._id, {
+        winCount: allCensored[number].winCount + 1,
+      });
+      axios
+        .put("/users/update/" + user._id, { score: score + 1 })
+        .catch((err) => console.log(err));
     } else {
       document.getElementById("toast-incorrect").style.display = "block";
       window.setTimeout(function () {
@@ -155,7 +177,7 @@ function Play() {
   };
 
   const nextButton = (event) => {
-    event.preventDefault()
+    event.preventDefault();
     setNumber(number + 1);
     setUserAnswer("");
     window.scrollTo(0, 100);
@@ -172,9 +194,9 @@ function Play() {
           current.charAt(0) === "O" ||
           current.charAt(0) === "U"
         ) {
-          return <span key={index}>{"An " + current }&nbsp;</span>;
+          return <span key={index}>{"An " + current}&nbsp;</span>;
         } else {
-          return <span key={index}>{"A " + current }&nbsp;</span>;
+          return <span key={index}>{"A " + current}&nbsp;</span>;
         }
       }
       if (index === allCensored[number].clue.length - 1) {
@@ -216,7 +238,6 @@ function Play() {
     window.scrollTo(0, 100);
   };
 
-
   const lastPage = () => {
     if (allCensored[number - 1]) {
       if (number === allCensored.length) {
@@ -256,7 +277,7 @@ function Play() {
           <br /> So, buckle up dude!!!
         </React.Fragment>
       );
-    } 
+    }
     if (timer > 60 && timer < 119) {
       return (
         <React.Fragment>
@@ -276,20 +297,26 @@ function Play() {
     if (timer > 150 && timer < 169) {
       return (
         <React.Fragment>
-        Your final 30 seconds
+          Your final 30 seconds
           <br /> Pull yourself together!!!
         </React.Fragment>
       );
     }
-      if (timer > 170) {
-        return (
-          <React.Fragment>
+    if (timer > 170) {
+      return (
+        <React.Fragment>
           Your last 10 seconds
-            <br /> Buckle Up!!!
-          </React.Fragment>
-        );
-      }
-    };
+          <br /> Buckle Up!!!
+        </React.Fragment>
+      );
+    }
+  };
+
+  const resultsClick = (answer) => {
+    setUserAnswer(answer);
+
+    document.getElementById("results").style.display = "none";
+  };
 
   const open = () => {
     document.getElementById("home-nav").style.display = "flex";
@@ -306,23 +333,62 @@ function Play() {
       </div>
 
       <div id='start-up-display' className='time-up-display'>
-        <p style={{margin: 0, fontSize: "30px", textAlign: "center", marginBottom: "20px"}}>You have got just 3 minutes !!!</p>
-        <p style={{margin: 0, fontSize: "20px", textAlign: "center", marginBottom: "20px"}}>Do as much and top the leaderboard :)</p>
-        <div style={{float: "right", padding: "10px", fontSize: "20px"}} onClick={() => {document.getElementById("start-up-display").style.display = "none"; document.getElementById("bg-overlay").style.display = "none"; setTimer(0)}}>Cool</div>
+        <p
+          style={{
+            margin: 0,
+            fontSize: "30px",
+            textAlign: "center",
+            marginBottom: "20px",
+          }}
+        >
+          You have got just 3 minutes !!!
+        </p>
+        <p
+          style={{
+            margin: 0,
+            fontSize: "20px",
+            textAlign: "center",
+            marginBottom: "20px",
+          }}
+        >
+          Do as much and top the leaderboard :)
+        </p>
+        <div
+          style={{ float: "right", padding: "10px", fontSize: "20px" }}
+          onClick={() => {
+            document.getElementById("start-up-display").style.display = "none";
+            document.getElementById("bg-overlay").style.display = "none";
+            setTimer(0);
+          }}
+        >
+          Cool
+        </div>
       </div>
 
       <div id='time-up-display' className='time-up-display'>
         <h1>TIME UP !!!</h1>
         <Timer />
         <div>
-        <div className="time-up-buttons" style={{ padding: "10px"}} onClick={() => window.location.reload()} > PLAY AGAIN </div>
-        <div className="time-up-buttons">
-        
-        <Link  style={{ padding: "10px", color: "#046ae6"}} to="/leaderboard"> OHH DAMN! </Link>
-        </div>
+          <div
+            className='time-up-buttons'
+            style={{ padding: "10px" }}
+            onClick={() => window.location.reload()}
+          >
+            {" "}
+            PLAY AGAIN{" "}
+          </div>
+          <div className='time-up-buttons'>
+            <Link
+              style={{ padding: "10px", color: "#046ae6" }}
+              to='/leaderboard'
+            >
+              {" "}
+              OHH DAMN!{" "}
+            </Link>
+          </div>
         </div>
       </div>
-    
+
       <div className='head-container'>
         <div style={{ width: "100%", boxSizing: "border-box" }}>
           <h1 id='home-head' className='home-head'>
@@ -361,50 +427,95 @@ function Play() {
         }}
       >
         {number === 0 && (
-          <h1 style={{textAlign: "center"}} className='play-page-head'>Go to private mode! <br />Censors coming up...</h1>
+          <h1 style={{ textAlign: "center" }} className='play-page-head'>
+            Go to private mode! <br />
+            Censors coming up...
+          </h1>
         )}
 
-        {
-          (timer > 169) ?
-          <p id="timer-field" style={{backgroundColor: "#ff0000", padding: "10px", borderRadius: "3px", margin: "5px"}}>
-          Your last {humanizeDuration(((180 - timer) * 1000),{delimiter: "  "})} 
-          </p> :
-          <p style={{backgroundColor: "#046ae6", padding: "10px", borderRadius: "3px", margin: "5px"}}>
-          {humanizeDuration(((180 - timer) * 1000),{delimiter: "  "})} left
+        {timer > 169 ? (
+          <p
+            id='timer-field'
+            style={{
+              backgroundColor: "#ff0000",
+              padding: "10px",
+              borderRadius: "3px",
+              margin: "5px",
+            }}
+          >
+            Your last{" "}
+            {humanizeDuration((180 - timer) * 1000, { delimiter: "  " })}
           </p>
-        }
+        ) : (
+          <p
+            style={{
+              backgroundColor: "#046ae6",
+              padding: "10px",
+              borderRadius: "3px",
+              margin: "5px",
+            }}
+          >
+            {humanizeDuration((180 - timer) * 1000, { delimiter: "  " })} left
+          </p>
+        )}
 
         {number < allCensored.length && (
           <h1 className='play-page-head'>Censor #{number + 1 - errorCount}</h1>
         )}
 
-        <h1 id='play-sub-head' className='play-sub-head'>{clue}</h1>
+        <h1 id='play-sub-head' className='play-sub-head'>
+          {clue}
+        </h1>
+      </div>
 
-    </div>
-
-    <div className='play-image-container'>
-    <img id="blur-image" src={image} alt='pic of the person' onError={handleImageBroken} />
-    {
-      // <div className='loader' id='loader' />
-    }
-  </div>
+      <div className='play-image-container'>
+        <img
+          id='blur-image'
+          src={image}
+          alt='pic of the person'
+          onError={handleImageBroken}
+        />
+        {
+          // <div className='loader' id='loader' />
+        }
+      </div>
 
       <form id='play-form' className='play-form' onSubmit={submitHandler}>
-        <input
-          id='play-answer'
-          className='play-answer'
-          type='text'
-          placeholder='Enter your answer'
-          value={userAnswer}
-          onChange={userAnswerHandler}
-          title='Enter your answer!'
-          required
-        />
+        <div>
+          <input
+            id='play-answer'
+            className='play-answer'
+            type='text'
+            placeholder='Enter your answer'
+            value={userAnswer}
+            onChange={userAnswerHandler}
+            title='Enter your answer!'
+            required
+          />
+          <div className='results' id='results'>
+            {results.map((current, index) => {
+              return (
+                <p onClick={() => resultsClick(current.answer)}>
+                  {current.answer}
+                </p>
+              );
+            })}
+          </div>
+        </div>
         <div id='button-container' className='button-container'>
           <button id='uncensor' className='answer-button' type='submit'>
             UNCENSOR
           </button>
-          {number < allCensored.length && ( <button id='next-arcade-button' className='answer-button' onClick={nextButton} > NEXT </button> )}
+          {number < allCensored.length && (
+            <button
+              id='next-arcade-button'
+              className='answer-button'
+              onClick={nextButton}
+            >
+              {" "}
+              NEXT{" "}
+            </button>
+          )}
           {lastPage()}
         </div>
       </form>

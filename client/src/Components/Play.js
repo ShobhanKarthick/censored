@@ -7,6 +7,7 @@ import generateHash from "random-hash";
 
 function Play() {
   const [allCensored, setAllCensored] = useState([]);
+  const [results, setResults] = useState([]);
   const [userAnswer, setUserAnswer] = useState("");
   const [number, setNumber] = useState(0);
   const [errorCount, setErrorCount] = useState(0);
@@ -72,7 +73,25 @@ function Play() {
   }
 
   const userAnswerHandler = (event) => {
-    setUserAnswer(event.target.value);
+
+    let answer = event.target.value
+
+    setUserAnswer(answer);
+
+    if (answer !== "") {
+      document.getElementById("results").style.display = "flex";
+    } else {
+      document.getElementById("results").style.display = "none";
+    }
+
+    if(!(answer.includes("\\"))){
+    axios
+      .post("/censored/search", { searchValue: answer })
+      .then((response) => {
+        setResults(response.data);
+      })
+      .catch((err) => console.log(err));
+    }
   };
 
   const submitHandler = (event) => {
@@ -114,9 +133,9 @@ function Play() {
           current.charAt(0) === "O" ||
           current.charAt(0) === "U"
         ) {
-          return <span key={index}>{"An " + current }&nbsp;</span>;
+          return <span key={index}>{"An " + current}&nbsp;</span>;
         } else {
-          return <span key={index}>{"A " + current }&nbsp;</span>;
+          return <span key={index}>{"A " + current}&nbsp;</span>;
         }
       }
       if (index === allCensored[number].clue.length - 1) {
@@ -168,7 +187,7 @@ function Play() {
       document.getElementById("bg-overlay").style.display = "block";
       document.getElementById("next-button").style.display = "block";
       document.getElementById("play-answer-message").style.display = "block";
-      document.getElementById('blur-image').scrollIntoView(true);
+      document.getElementById("blur-image").scrollIntoView(true);
 
       axios
         .put("/censored/update/" + allCensored[number]._id, {
@@ -240,6 +259,12 @@ function Play() {
     }
   };
 
+  const resultsClick = (answer) => {
+    setUserAnswer(answer);
+
+    document.getElementById("results").style.display = "none";
+  };
+
   const open = () => {
     document.getElementById("home-nav").style.display = "flex";
   };
@@ -300,36 +325,65 @@ function Play() {
 
         {number < allCensored.length && (
           <h1 className='play-page-head'>Censor #{number + 1 - errorCount}</h1>
-          )}
+        )}
 
         <h1 id='play-sub-head' className='play-sub-head'>
           {clue}
         </h1>
       </div>
-      <h1 className='play-page-head' id="play-answer-message">Uncensored Titan is censoring you for life !</h1>
+      <h1 className='play-page-head' id='play-answer-message'>
+        Uncensored Titan is censoring you for life !
+      </h1>
 
       <div className='play-image-container'>
-          <img id="blur-image" src={image} alt='pic of the person' onError={handleImageBroken} />
-          {
-            // <div className='loader' id='loader' />
-          }
+        <img
+          id='blur-image'
+          src={image}
+          alt='pic of the person'
+          onError={handleImageBroken}
+        />
+        {
+          // <div className='loader' id='loader' />
+        }
       </div>
-      <h1 className='play-page-head' id="play-page-answer-head">The answer is <span style={{color: "#038dea"}}>{allCensored[number] && allCensored[number].answer} </span></h1>
-      <button id="next-button" className="answer-button" onClick={postAnswerDisplay}>NEXT</button>
+      <h1 className='play-page-head' id='play-page-answer-head'>
+        The answer is{" "}
+        <span style={{ color: "#038dea" }}>
+          {allCensored[number] && allCensored[number].answer}{" "}
+        </span>
+      </h1>
+      <button
+        id='next-button'
+        className='answer-button'
+        onClick={postAnswerDisplay}
+      >
+        NEXT
+      </button>
 
       <form id='play-form' className='play-form' onSubmit={submitHandler}>
-        <input
-          id='play-answer'
-          className='play-answer'
-          type='text'
-          placeholder='Enter your answer'
-          value={userAnswer}
-          onChange={userAnswerHandler}
-          title='Enter your answer!'
-          required
-        />
+        <div>
+          <input
+            id='play-answer'
+            className='play-answer'
+            type='text'
+            placeholder='Enter your answer'
+            value={userAnswer}
+            onChange={userAnswerHandler}
+            title='Enter your answer!'
+            required
+          />
+          <div className='results' id='results'>
+            {results.map((current, index) => {
+              return (
+                <p onClick={() => resultsClick(current.answer)}>
+                  {current.answer}
+                </p>
+              );
+            })}
+          </div>
+        </div>
         <div id='button-container' className='button-container'>
-          <button id='uncensor' className='answer-button'type='submit'>
+          <button id='uncensor' className='answer-button' type='submit'>
             UNCENSOR
           </button>
           {number < allCensored.length && (
@@ -338,7 +392,7 @@ function Play() {
               className='answer-button'
               onClick={displayAnswer}
             >
-            SHOW ANSWER
+              SHOW ANSWER
             </button>
           )}
           {lastPage()}

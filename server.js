@@ -64,6 +64,18 @@ censoredRoutes.route('/update/:id').put((req, res, next) => {
 	})
 })
 
+censoredRoutes.route('/search').post((req, res) => {
+
+	Censored.find({ answer: {$regex: req.body.searchValue, $options: 'i'}}).limit(10)
+	.then(results => {
+		res.status(200).json(results)
+	})
+	.catch(err => {
+		res.status(400).send("Not Found")
+		console.log(err)
+	})
+})
+
 userRoutes.route("/topten").get((req, res) => {
 	User.find().sort({score: -1}).limit(10)
 		.then(users => {
