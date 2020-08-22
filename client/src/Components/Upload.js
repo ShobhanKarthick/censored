@@ -97,7 +97,7 @@ function Upload() {
         <div><input id="Economist" className='upload-tag-input' type='checkbox' value="Economist" onChange={clueHandler} /><label className="upload-input-label" for="Economist">Economist</label></div>
         <div><input id="Footballer" className='upload-tag-input' type='checkbox' value="Footballer" onChange={clueHandler} /><label className="upload-input-label" for="Footballer">Footballer</label></div>
         <div><input id="Cricketer" className='upload-tag-input' type='checkbox' value="Cricketer" onChange={clueHandler} /><label className="upload-input-label" for="Cricketer">Cricketer</label></div>
-        <div><input id="Basketballer" className='upload-tag-input' type='checkbox' value="Economist" onChange={clueHandler} /><label className="upload-input-label" for="Economist">Economist</label></div>
+        <div><input id="Basketballer" className='upload-tag-input' type='checkbox' value="Basketballer" onChange={clueHandler} /><label className="upload-input-label" for="Basketballer">Basketballer</label></div>
         <div><input id="ChessPlayer" className='upload-tag-input' type='checkbox' value="Chess Player" onChange={clueHandler} /><label className="upload-input-label" for="ChessPlayer">Chess Player</label></div>
         <div><input id="Actor" className='upload-tag-input' type='checkbox' value="Actor" onChange={clueHandler} /><label className="upload-input-label" for="Actor">Actor</label></div>
         <div><input id="Comedian" className='upload-tag-input' type='checkbox' value="Comedian" onChange={clueHandler} /><label className="upload-input-label" for="Comedian">Comedian</label></div>
@@ -120,6 +120,7 @@ function Upload() {
         <div><input id="CEO" className='upload-tag-input' type='checkbox' value="CEO" onChange={clueHandler} /><label className="upload-input-label" for="CEO">CEO</label></div>
         <div><input id="Engineer" className='upload-tag-input' type='checkbox' value="Engineer" onChange={clueHandler} /><label className="upload-input-label" for="Engineer">Engineer</label></div>
         <div><input id="MartialArtist" className='upload-tag-input' type='checkbox' value="Martial Artist" onChange={clueHandler} /><label className="upload-input-label" for="MartialArtist">Martial Artist</label></div>
+        <div><input id="Politician" className='upload-tag-input' type='checkbox' value="Politician" onChange={clueHandler} /><label className="upload-input-label" for="Politician">Politician</label></div>
         </fieldset>
       <input
           style={{ marginBottom: "20px" }}
