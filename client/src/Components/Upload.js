@@ -78,6 +78,7 @@ function Upload() {
     document.getElementById("Professor").checked = false
     document.getElementById("IndustrialDesigner").checked = false
     document.getElementById("Director").checked = false
+    document.getElementById("Politician").checked = false
   };
 
   return (
@@ -111,6 +112,7 @@ function Upload() {
         <div><input id="Professor" className='upload-tag-input' type='checkbox' value="Professor" onChange={clueHandler} /><label className="upload-input-label" for="Professor">Professor</label></div>
         <div><input id="IndustrialDesigner" className='upload-tag-input' type='checkbox' value="Industrial Designer" onChange={clueHandler} /><label className="upload-input-label" for="IndustrialDesigner">Industrial Designer</label></div>
         <div><input id="Director" className='upload-tag-input' type='checkbox' value="Director" onChange={clueHandler} /><label className="upload-input-label" for="Director">Director</label></div>
+        <div><input id="Politician" className='upload-tag-input' type='checkbox' value="Politician" onChange={clueHandler} /><label className="upload-input-label" for="Politician">Politician</label></div>
         </fieldset>
       <input
           style={{ marginBottom: "20px" }}
