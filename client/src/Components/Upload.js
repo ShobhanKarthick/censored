@@ -90,7 +90,7 @@ function Upload() {
         <div><input id="Scientist" className='upload-tag-input' type='checkbox' value="Scientist" onChange={clueHandler} /><label className="upload-input-label" for="Scientist">Scientist</label></div>
         <div><input id="Inventor" className='upload-tag-input' type='checkbox' value="Inventor" onChange={clueHandler} /><label className="upload-input-label" for="Inventor">Inventor</label></div>
         <div><input id="Entrepreneur" className='upload-tag-input' type='checkbox' value="Entrepreneur" onChange={clueHandler} /><label className="upload-input-label" for="Entrepreneur">Entrepreneur</label></div>
-        <div><input id="Economist" className='upload-tag-input' type='checkbox' value="Basketballer" onChange={clueHandler} /><label className="upload-input-label" for="Basketballer">Basketballer</label></div>
+        <div><input id="Economist" className='upload-tag-input' type='checkbox' value="Economist" onChange={clueHandler} /><label className="upload-input-label" for="Economist">Economist</label></div>
         <div><input id="Footballer" className='upload-tag-input' type='checkbox' value="Footballer" onChange={clueHandler} /><label className="upload-input-label" for="Footballer">Footballer</label></div>
         <div><input id="Cricketer" className='upload-tag-input' type='checkbox' value="Cricketer" onChange={clueHandler} /><label className="upload-input-label" for="Cricketer">Cricketer</label></div>
         <div><input id="Basketballer" className='upload-tag-input' type='checkbox' value="Economist" onChange={clueHandler} /><label className="upload-input-label" for="Economist">Economist</label></div>
