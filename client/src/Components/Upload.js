@@ -59,7 +59,7 @@ function Upload() {
     document.getElementById("Cricketer").checked = false
     document.getElementById("Basketballer").checked = false
     document.getElementById("ChessPlayer ").checked = false
-    document.getElementById("Celebrity").checked = false
+    document.getElementById("Actor").checked = false
     document.getElementById("Humanitarian").checked = false
     document.getElementById("Authors").checked = false
     document.getElementById("HistoricalFigure").checked = false
@@ -95,7 +95,7 @@ function Upload() {
         <div><input id="Cricketer" className='upload-tag-input' type='checkbox' value="Cricketer" onChange={clueHandler} /><label className="upload-input-label" for="Cricketer">Cricketer</label></div>
         <div><input id="Basketballer" className='upload-tag-input' type='checkbox' value="Economist" onChange={clueHandler} /><label className="upload-input-label" for="Economist">Economist</label></div>
         <div><input id="ChessPlayer" className='upload-tag-input' type='checkbox' value="Chess Player" onChange={clueHandler} /><label className="upload-input-label" for="ChessPlayer">Chess Player</label></div>
-        <div><input id="Celebrity" className='upload-tag-input' type='checkbox' value="Celebrity" onChange={clueHandler} /><label className="upload-input-label" for="Celebrity">Celebrity</label></div>
+        <div><input id="Actor" className='upload-tag-input' type='checkbox' value="Actor" onChange={clueHandler} /><label className="upload-input-label" for="Actor">Actor</label></div>
         <div><input id="Comedian" className='upload-tag-input' type='checkbox' value="Comedian" onChange={clueHandler} /><label className="upload-input-label" for="Comedian">Comedian</label></div>
         <div><input id="Humanitarian" className='upload-tag-input' type='checkbox' value="Humanitarian" onChange={clueHandler} /><label className="upload-input-label" for="Humanitarian">Humanitarian</label></div>
         <div><input id="Authors" className='upload-tag-input' type='checkbox' value="Authors" onChange={clueHandler} /><label className="upload-input-label" for="Authors">Authors</label></div>
