@@ -79,6 +79,10 @@ function Upload() {
     document.getElementById("IndustrialDesigner").checked = false
     document.getElementById("Director").checked = false
     document.getElementById("Politician").checked = false
+    document.getElementById("Model").checked = false
+    document.getElementById("CEO").checked = false
+    document.getElementById("Engineer").checked = false
+    document.getElementById("MartialArtist").checked = false
   };
 
   return (
@@ -112,7 +116,10 @@ function Upload() {
         <div><input id="Professor" className='upload-tag-input' type='checkbox' value="Professor" onChange={clueHandler} /><label className="upload-input-label" for="Professor">Professor</label></div>
         <div><input id="IndustrialDesigner" className='upload-tag-input' type='checkbox' value="Industrial Designer" onChange={clueHandler} /><label className="upload-input-label" for="IndustrialDesigner">Industrial Designer</label></div>
         <div><input id="Director" className='upload-tag-input' type='checkbox' value="Director" onChange={clueHandler} /><label className="upload-input-label" for="Director">Director</label></div>
-        <div><input id="Politician" className='upload-tag-input' type='checkbox' value="Politician" onChange={clueHandler} /><label className="upload-input-label" for="Politician">Politician</label></div>
+        <div><input id="Model" className='upload-tag-input' type='checkbox' value="Model" onChange={clueHandler} /><label className="upload-input-label" for="Model">Model</label></div>
+        <div><input id="CEO" className='upload-tag-input' type='checkbox' value="CEO" onChange={clueHandler} /><label className="upload-input-label" for="CEO">CEO</label></div>
+        <div><input id="Engineer" className='upload-tag-input' type='checkbox' value="Engineer" onChange={clueHandler} /><label className="upload-input-label" for="Engineer">Engineer</label></div>
+        <div><input id="MartialArtist" className='upload-tag-input' type='checkbox' value="Martial Artist" onChange={clueHandler} /><label className="upload-input-label" for="MartialArtist">Martial Artist</label></div>
         </fieldset>
       <input
           style={{ marginBottom: "20px" }}
